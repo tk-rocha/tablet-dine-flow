@@ -49,19 +49,19 @@ const WaiterLogin = () => {
       }}
     >
       <div className="absolute inset-0 bg-black/50"></div>
-      <div className="bg-card rounded-2xl shadow-2xl p-12 w-full max-w-md space-y-8 relative z-10">
-        <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold text-restaurant-primary">
+      <div className="bg-card rounded-2xl shadow-2xl p-8 w-full max-w-sm space-y-6 relative z-10">
+        <div className="text-center space-y-3">
+          <h1 className="text-2xl font-bold text-restaurant-primary">
             Sistema de Autoatendimento
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base text-muted-foreground">
             Acesso do Garçom
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-lg font-semibold">
+            <Label htmlFor="password" className="text-base font-medium">
               Senha de Acesso
             </Label>
             <Input
@@ -70,22 +70,22 @@ const WaiterLogin = () => {
               placeholder="Digite a senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-14 text-lg"
+              className="h-12 text-base"
               onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="table" className="text-lg font-semibold">
+            <Label htmlFor="table" className="text-base font-medium">
               Selecionar Mesa
             </Label>
             <Select value={selectedTable} onValueChange={setSelectedTable}>
-              <SelectTrigger className="h-14 text-lg">
+              <SelectTrigger className="h-12 text-base">
                 <SelectValue placeholder="Escolha uma mesa" />
               </SelectTrigger>
               <SelectContent>
                 {tables.map((table) => (
-                  <SelectItem key={table.id} value={table.name} className="text-lg">
+                  <SelectItem key={table.id} value={table.name} className="text-base">
                     {table.name}
                   </SelectItem>
                 ))}
@@ -96,7 +96,7 @@ const WaiterLogin = () => {
           <Button 
             onClick={handleLogin}
             variant="tablet"
-            className="w-full mt-8"
+            className="w-full mt-6"
           >
             ENTREGAR AO CLIENTE
           </Button>

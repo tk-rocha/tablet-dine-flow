@@ -20,5 +20,5 @@ export interface Table {
 export interface Category {
   id: string;
   name: string;
-  icon: string;
+  icon?: string;
 }
