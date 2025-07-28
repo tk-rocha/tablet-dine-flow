@@ -52,6 +52,12 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				restaurant: {
+					primary: 'hsl(var(--restaurant-primary))',
+					secondary: 'hsl(var(--restaurant-secondary))',
+					neutral: 'hsl(var(--restaurant-neutral))',
+					success: 'hsl(var(--restaurant-success))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
