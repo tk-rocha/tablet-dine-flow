@@ -63,7 +63,7 @@ const ProductDetail = () => {
               </div>
               
               <div className="text-4xl font-bold text-restaurant-primary">
-                R$ {product.price.toFixed(2)}
+                R$ {product.price.toFixed(2).replace('.', ',')}
               </div>
               
               <Button

@@ -52,16 +52,16 @@ const Checkout = () => {
             <div className="space-y-4">
               <div className="flex justify-between text-xl">
                 <span>Subtotal:</span>
-                <span className="font-semibold">R$ {total.toFixed(2)}</span>
+                <span className="font-semibold">R$ {total.toFixed(2).replace('.', ',')}</span>
               </div>
               <div className="flex justify-between text-xl">
                 <span>Taxa de serviço (10%):</span>
-                <span className="font-semibold">R$ {serviceCharge.toFixed(2)}</span>
+                <span className="font-semibold">R$ {serviceCharge.toFixed(2).replace('.', ',')}</span>
               </div>
               <hr className="border-restaurant-primary/20" />
               <div className="flex justify-between text-2xl font-bold text-restaurant-primary">
                 <span>Total:</span>
-                <span>R$ {totalWithService.toFixed(2)}</span>
+                <span>R$ {totalWithService.toFixed(2).replace('.', ',')}</span>
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@ const Checkout = () => {
             />
             {people && parseInt(people) > 0 && (
               <p className="text-lg text-restaurant-primary font-semibold">
-                Valor por pessoa: R$ {pricePerPerson.toFixed(2)}
+                Valor por pessoa: R$ {pricePerPerson.toFixed(2).replace('.', ',')}
               </p>
             )}
           </div>

@@ -9,7 +9,7 @@ interface CategoryListProps {
 const CategoryList = ({ selectedCategory, onCategorySelect }: CategoryListProps) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-3 h-full">
-      <h2 className="text-xl font-semibold text-restaurant-primary mb-4">
+      <h2 className="text-xl font-semibold text-restaurant-primary mb-4 text-center">
         Categorias
       </h2>
       <div className="space-y-2">

@@ -69,7 +69,7 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-restaurant-primary">
-                    R$ {product.price.toFixed(2)}
+                    R$ {product.price.toFixed(2).replace('.', ',')}
                   </span>
                 </div>
               </div>

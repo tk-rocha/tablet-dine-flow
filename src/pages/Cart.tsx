@@ -84,7 +84,7 @@ const Cart = () => {
                     
                     <div className="flex items-center gap-4">
                       <span className="text-2xl font-bold text-restaurant-primary">
-                        R$ {(item.product.price * item.quantity).toFixed(2)}
+                        R$ {(item.product.price * item.quantity).toFixed(2).replace('.', ',')}
                       </span>
                       <Button
                         variant="outline"
@@ -105,7 +105,7 @@ const Cart = () => {
                     Total:
                   </span>
                   <span className="text-3xl font-bold text-restaurant-primary">
-                    R$ {getTotalPrice().toFixed(2)}
+                    R$ {getTotalPrice().toFixed(2).replace('.', ',')}
                   </span>
                 </div>
                 
