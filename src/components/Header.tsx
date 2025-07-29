@@ -11,13 +11,11 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-gradient-to-r from-restaurant-primary to-restaurant-primary/90 shadow-lg px-6 py-4">
+    <header className="bg-restaurant-white shadow-lg px-6 py-4 border-b">
       <div className="flex items-center justify-between">
         {/* Mesa */}
-        <div className="flex items-center gap-3">
-          <div className="bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
-            <span className="text-white font-medium text-lg">{currentTable}</span>
-          </div>
+        <div className="flex items-center">
+          <span className="text-restaurant-primary font-bold text-xl">{currentTable}</span>
         </div>
         
         {/* Logo centralizado */}
@@ -25,7 +23,7 @@ const Header = () => {
           <img 
             src="/lovable-uploads/5a57adf3-7843-4356-94a1-b26fadcb3dd7.png" 
             alt="The Cuisine Restaurant" 
-            className="h-12 filter brightness-0 invert"
+            className="h-12"
           />
         </div>
         
@@ -35,7 +33,7 @@ const Header = () => {
             variant="ghost"
             size="sm"
             onClick={() => navigate('/search')}
-            className="text-white hover:bg-white/20 h-10 w-10 p-0"
+            className="text-restaurant-primary hover:bg-restaurant-neutral h-10 w-10 p-0"
           >
             <Search className="h-5 w-5" />
           </Button>
@@ -43,19 +41,18 @@ const Header = () => {
           <Button
             variant="ghost"
             size="sm"
-            className="text-white hover:bg-white/20 h-10 px-3"
+            className="text-restaurant-secondary hover:bg-restaurant-secondary/10 h-10 px-3 border border-restaurant-secondary"
           >
             <Phone className="h-4 w-4 mr-2" />
-            Garçom
+            Chamar Garçom
           </Button>
           
           <Button
-            variant="secondary"
+            variant="ghost"
             onClick={() => navigate('/cart')}
-            className="relative h-10 px-4 bg-restaurant-secondary hover:bg-restaurant-secondary/90 text-restaurant-primary font-medium"
+            className="relative h-10 px-4 text-restaurant-primary hover:bg-restaurant-neutral"
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
-            Sacola
             {getTotalItems() > 0 && (
               <span className="absolute -top-1 -right-1 bg-restaurant-primary text-white rounded-full h-5 w-5 flex items-center justify-center text-xs font-bold">
                 {getTotalItems()}

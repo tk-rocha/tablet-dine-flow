@@ -58,15 +58,12 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 h-full overflow-y-auto">
-      <h2 className="text-2xl font-bold text-restaurant-primary mb-6">
-        Produtos
-      </h2>
-      <div className="grid grid-cols-2 gap-6">
+    <div className="bg-restaurant-white rounded-lg shadow-md p-6 h-full overflow-y-auto">
+      <div className="grid grid-cols-3 gap-6">
         {filteredProducts.map((product) => (
           <div
             key={product.id}
-            className="bg-card rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
+            className="bg-restaurant-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 border border-restaurant-neutral"
           >
             <div 
               className="cursor-pointer"
@@ -81,17 +78,25 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
                 <h3 className="text-lg font-semibold text-restaurant-primary mb-2">
                   {product.name}
                 </h3>
-                <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-                  {product.description}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-restaurant-primary">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xl font-bold text-restaurant-primary">
                     R$ {product.price.toFixed(2).replace('.', ',')}
                   </span>
                 </div>
               </div>
             </div>
-            <div className="p-4 pt-0">
+            <div className="px-4 pb-4 space-y-2">
+              <Button
+                variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleProductClick(product.id);
+                }}
+                className="w-full border-restaurant-primary text-restaurant-primary hover:bg-restaurant-primary hover:text-restaurant-white"
+              >
+                VER PRODUTO
+              </Button>
+              
               {getItemQuantity(product.id) > 0 ? (
                 <QuantityControl
                   quantity={getItemQuantity(product.id)}
@@ -104,11 +109,9 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
                     e.stopPropagation();
                     handleAddToCart(product);
                   }}
-                  variant="tablet"
-                  className="w-full"
+                  className="w-full bg-restaurant-primary text-restaurant-white hover:bg-restaurant-primary/90"
                 >
-                  <Plus className="h-5 w-5" />
-                  Adicionar
+                  ADICIONAR
                 </Button>
               )}
             </div>

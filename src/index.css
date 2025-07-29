@@ -36,10 +36,11 @@ All colors MUST be HSL.
     --input: 238 14% 88%;
     --ring: 239 71% 13%;
 
-    /* Restaurant specific tokens */
-    --restaurant-primary: 239 71% 13%;
-    --restaurant-secondary: 48 100% 58%;
-    --restaurant-neutral: 238 14% 88%;
+    /* Restaurant specific tokens - Sistema novo */
+    --restaurant-primary: 248 65% 14%; /* #180F33 - Azul escuro */
+    --restaurant-secondary: 47 100% 59%; /* #FFC72C - Amarelo */
+    --restaurant-neutral: 240 7% 89%; /* #E1E1E5 - Cinza azulado */
+    --restaurant-white: 0 0% 100%; /* #FFFFFF - Branco */
     --restaurant-success: 142 76% 36%;
     
     /* Gradients */

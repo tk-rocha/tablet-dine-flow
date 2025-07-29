@@ -1,11 +1,14 @@
 import { Product, Category, Table } from '@/lib/types';
 
 export const categories: Category[] = [
-  { id: '1', name: 'Bebidas' },
-  { id: '2', name: 'Doces' },
-  { id: '3', name: 'Salgados' },
-  { id: '4', name: 'Pratos Quentes' },
-  { id: '5', name: 'Cafés' },
+  { id: '1', name: 'PRATO DO DIA' },
+  { id: '2', name: 'EXECUTIVO' },
+  { id: '3', name: 'MASSAS' },
+  { id: '4', name: 'LANCHES' },
+  { id: '5', name: 'BEBIDAS' },
+  { id: '6', name: 'CAFÉS' },
+  { id: '7', name: 'PORÇÕES' },
+  { id: '8', name: 'SOBREMESAS' },
 ];
 
 export const products: Product[] = [

@@ -56,6 +56,7 @@ export default {
 					primary: 'hsl(var(--restaurant-primary))',
 					secondary: 'hsl(var(--restaurant-secondary))',
 					neutral: 'hsl(var(--restaurant-neutral))',
+					white: 'hsl(var(--restaurant-white))',
 					success: 'hsl(var(--restaurant-success))'
 				},
 				sidebar: {
