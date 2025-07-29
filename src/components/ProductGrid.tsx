@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Check } from 'lucide-react';
 import { products } from '@/data/mockData';
 import { useCart } from '@/contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ interface ProductGridProps {
 const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
   const { addItem } = useCart();
   const navigate = useNavigate();
+  const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
   
   const filteredProducts = products.filter(
     product => product.category === selectedCategory
@@ -20,10 +21,20 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
 
   const handleAddToCart = (product: any) => {
     addItem(product);
+    setAddedItems(prev => new Set(prev).add(product.id));
     toast({
       title: "Item adicionado",
       description: `${product.name} foi adicionado à sacola`,
     });
+    
+    // Remove o efeito após 2 segundos
+    setTimeout(() => {
+      setAddedItems(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(product.id);
+        return newSet;
+      });
+    }, 2000);
   };
 
   const handleProductClick = (productId: string) => {
@@ -81,10 +92,23 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
                   handleAddToCart(product);
                 }}
                 variant="tablet"
-                className="w-full"
+                className={`w-full transition-all duration-300 ${
+                  addedItems.has(product.id) 
+                    ? 'bg-green-600 hover:bg-green-700 text-white' 
+                    : ''
+                }`}
               >
-                <Plus className="h-5 w-5" />
-                Adicionar
+                {addedItems.has(product.id) ? (
+                  <>
+                    <Check className="h-5 w-5" />
+                    Adicionado
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-5 w-5" />
+                    Adicionar
+                  </>
+                )}
               </Button>
             </div>
           </div>

@@ -17,13 +17,13 @@ const CategoryList = ({ selectedCategory, onCategorySelect }: CategoryListProps)
           <button
             key={category.id}
             onClick={() => onCategorySelect(category.id)}
-            className={`w-full text-left p-3 rounded-lg transition-all duration-300 ${
+            className={`w-full text-center p-3 rounded-lg transition-all duration-300 ${
               selectedCategory === category.id
                 ? 'bg-restaurant-primary text-white shadow-lg'
                 : 'bg-restaurant-neutral text-restaurant-primary hover:bg-restaurant-primary/10'
             }`}
           >
-            <div className="flex items-center">
+            <div className="flex items-center justify-center">
               <span className="text-base font-medium">{category.name}</span>
             </div>
           </button>
