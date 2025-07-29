@@ -1,15 +1,16 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus } from 'lucide-react';
 import { products } from '@/data/mockData';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
+import QuantityControl from '@/components/QuantityControl';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { addItem, updateQuantity, getItemQuantity } = useCart();
   
   const product = products.find(p => p.id === id);
 
@@ -27,7 +28,22 @@ const ProductDetail = () => {
       title: "Item adicionado",
       description: `${product.name} foi adicionado à sacola`,
     });
-    navigate('/menu');
+  };
+
+  const handleIncreaseQuantity = () => {
+    const currentQuantity = getItemQuantity(product.id);
+    if (currentQuantity === 0) {
+      addItem(product);
+    } else {
+      updateQuantity(product.id, currentQuantity + 1);
+    }
+  };
+
+  const handleDecreaseQuantity = () => {
+    const currentQuantity = getItemQuantity(product.id);
+    if (currentQuantity > 0) {
+      updateQuantity(product.id, currentQuantity - 1);
+    }
   };
 
   return (
@@ -66,13 +82,33 @@ const ProductDetail = () => {
                 R$ {product.price.toFixed(2).replace('.', ',')}
               </div>
               
-              <Button
-                onClick={handleAddToCart}
-                variant="tablet"
-                className="w-full mt-8"
-              >
-                ADICIONAR À SACOLA
-              </Button>
+              {getItemQuantity(product.id) > 0 ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-medium text-restaurant-primary">
+                      Quantidade na sacola:
+                    </span>
+                    <span className="text-lg font-bold text-restaurant-primary">
+                      R$ {(product.price * getItemQuantity(product.id)).toFixed(2).replace('.', ',')}
+                    </span>
+                  </div>
+                  <QuantityControl
+                    quantity={getItemQuantity(product.id)}
+                    onIncrease={handleIncreaseQuantity}
+                    onDecrease={handleDecreaseQuantity}
+                    size="md"
+                  />
+                </div>
+              ) : (
+                <Button
+                  onClick={handleAddToCart}
+                  variant="tablet"
+                  className="w-full mt-8"
+                >
+                  <Plus className="h-6 w-6 mr-3" />
+                  ADICIONAR À SACOLA
+                </Button>
+              )}
             </div>
           </div>
         </div>

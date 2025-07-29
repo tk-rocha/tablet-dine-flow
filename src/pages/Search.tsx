@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { products } from '@/data/mockData';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
+import QuantityControl from '@/components/QuantityControl';
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { addItem, updateQuantity, getItemQuantity } = useCart();
   
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -23,6 +24,22 @@ const Search = () => {
       title: "Item adicionado",
       description: `${product.name} foi adicionado à sacola`,
     });
+  };
+
+  const handleIncreaseQuantity = (product: any) => {
+    const currentQuantity = getItemQuantity(product.id);
+    if (currentQuantity === 0) {
+      addItem(product);
+    } else {
+      updateQuantity(product.id, currentQuantity + 1);
+    }
+  };
+
+  const handleDecreaseQuantity = (productId: string) => {
+    const currentQuantity = getItemQuantity(productId);
+    if (currentQuantity > 0) {
+      updateQuantity(productId, currentQuantity - 1);
+    }
   };
 
   return (
@@ -87,14 +104,22 @@ const Search = () => {
                             R$ {product.price.toFixed(2).replace('.', ',')}
                           </span>
                         </div>
-                        <Button
-                          onClick={() => handleAddToCart(product)}
-                          variant="tablet"
-                          className="w-full"
-                        >
-                          <Plus className="h-5 w-5" />
-                          Adicionar
-                        </Button>
+                        {getItemQuantity(product.id) > 0 ? (
+                          <QuantityControl
+                            quantity={getItemQuantity(product.id)}
+                            onIncrease={() => handleIncreaseQuantity(product)}
+                            onDecrease={() => handleDecreaseQuantity(product.id)}
+                          />
+                        ) : (
+                          <Button
+                            onClick={() => handleAddToCart(product)}
+                            variant="tablet"
+                            className="w-full"
+                          >
+                            <Plus className="h-5 w-5" />
+                            Adicionar
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))}

@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus, Check } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { products } from '@/data/mockData';
 import { useCart } from '@/contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
+import QuantityControl from './QuantityControl';
 
 interface ProductGridProps {
   selectedCategory: string;
 }
 
 const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
-  const { addItem } = useCart();
+  const { addItem, updateQuantity, getItemQuantity } = useCart();
   const navigate = useNavigate();
-  const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
   
   const filteredProducts = products.filter(
     product => product.category === selectedCategory
@@ -21,20 +21,26 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
 
   const handleAddToCart = (product: any) => {
     addItem(product);
-    setAddedItems(prev => new Set(prev).add(product.id));
     toast({
       title: "Item adicionado",
       description: `${product.name} foi adicionado à sacola`,
     });
-    
-    // Remove o efeito após 2 segundos
-    setTimeout(() => {
-      setAddedItems(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(product.id);
-        return newSet;
-      });
-    }, 2000);
+  };
+
+  const handleIncreaseQuantity = (product: any) => {
+    const currentQuantity = getItemQuantity(product.id);
+    if (currentQuantity === 0) {
+      addItem(product);
+    } else {
+      updateQuantity(product.id, currentQuantity + 1);
+    }
+  };
+
+  const handleDecreaseQuantity = (productId: string) => {
+    const currentQuantity = getItemQuantity(productId);
+    if (currentQuantity > 0) {
+      updateQuantity(productId, currentQuantity - 1);
+    }
   };
 
   const handleProductClick = (productId: string) => {
@@ -86,30 +92,25 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
               </div>
             </div>
             <div className="p-4 pt-0">
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddToCart(product);
-                }}
-                variant="tablet"
-                className={`w-full transition-all duration-300 ${
-                  addedItems.has(product.id) 
-                    ? 'bg-green-600 hover:bg-green-700 text-white' 
-                    : ''
-                }`}
-              >
-                {addedItems.has(product.id) ? (
-                  <>
-                    <Check className="h-5 w-5" />
-                    Adicionado
-                  </>
-                ) : (
-                  <>
-                    <Plus className="h-5 w-5" />
-                    Adicionar
-                  </>
-                )}
-              </Button>
+              {getItemQuantity(product.id) > 0 ? (
+                <QuantityControl
+                  quantity={getItemQuantity(product.id)}
+                  onIncrease={() => handleIncreaseQuantity(product)}
+                  onDecrease={() => handleDecreaseQuantity(product.id)}
+                />
+              ) : (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddToCart(product);
+                  }}
+                  variant="tablet"
+                  className="w-full"
+                >
+                  <Plus className="h-5 w-5" />
+                  Adicionar
+                </Button>
+              )}
             </div>
           </div>
         ))}
