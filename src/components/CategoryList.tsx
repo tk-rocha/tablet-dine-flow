@@ -8,8 +8,8 @@ interface CategoryListProps {
 
 const CategoryList = ({ selectedCategory, onCategorySelect }: CategoryListProps) => {
   return (
-    <div className="bg-restaurant-white rounded-lg shadow-md p-4 h-full flex flex-col">
-      <div className="flex-1 space-y-3">
+    <div className="bg-restaurant-white rounded-lg shadow-md p-4 h-full">
+      <div className="space-y-3">
         {categories.map((category) => (
           <button
             key={category.id}
@@ -23,15 +23,6 @@ const CategoryList = ({ selectedCategory, onCategorySelect }: CategoryListProps)
             <span className="text-sm">{category.name}</span>
           </button>
         ))}
-      </div>
-      
-      {/* Ícone de sincronização no rodapé */}
-      <div className="pt-4 border-t border-restaurant-neutral">
-        <div className="flex justify-center">
-          <div className="w-8 h-8 rounded-full bg-restaurant-neutral flex items-center justify-center">
-            <div className="w-4 h-4 border-2 border-restaurant-primary border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        </div>
       </div>
     </div>
   );
