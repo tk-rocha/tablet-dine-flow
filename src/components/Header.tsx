@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Phone, ShoppingCart } from 'lucide-react';
+import { Search, Phone, ShoppingCart, ArrowLeft } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useCart } from '@/contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +13,16 @@ const Header = () => {
   return (
     <header className="bg-restaurant-white shadow-lg px-6 py-4 border-b">
       <div className="flex items-center justify-between">
-        {/* Mesa */}
-        <div className="flex items-center">
+        {/* Botão Voltar e Mesa */}
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="text-restaurant-primary hover:bg-restaurant-neutral h-10 w-10 p-0"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
           <span className="text-restaurant-primary font-bold text-xl">{currentTable}</span>
         </div>
         
