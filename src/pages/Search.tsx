@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { products } from '@/data/mockData';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
 import QuantityControl from '@/components/QuantityControl';
+import StandardHeader from '@/components/StandardHeader';
 
 const Search = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,18 +45,11 @@ const Search = () => {
 
   return (
     <div className="min-h-screen bg-restaurant-neutral">
-      <div className="p-6">
-        <Button
-          variant="outline"
-          onClick={() => navigate('/menu')}
-          className="mb-6 text-lg"
-        >
-          <ArrowLeft className="h-5 w-5" />
-          Voltar
-        </Button>
-        
+      <StandardHeader title="Pesquisar Produtos" />
+      
+      <div className="pt-20 p-6">
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-4xl font-bold text-restaurant-primary mb-8">
+          <h1 className="text-xl font-bold text-restaurant-primary mb-8">
             Pesquisar Produtos
           </h1>
           
@@ -71,8 +65,8 @@ const Search = () => {
           
           {searchTerm && (
             <div>
-              <h2 className="text-2xl font-semibold text-restaurant-primary mb-6">
-                Resultados da pesquisa ({filteredProducts.length} encontrados)
+              <h2 className="text-sm font-normal text-restaurant-primary mb-6">
+                Resultado da pesquisa ({filteredProducts.length} encontrados)
               </h2>
               
               {filteredProducts.length === 0 ? (

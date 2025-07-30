@@ -1,11 +1,12 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { products } from '@/data/mockData';
 import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
 import QuantityControl from '@/components/QuantityControl';
+import StandardHeader from '@/components/StandardHeader';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -48,16 +49,9 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-restaurant-neutral">
-      <div className="p-6">
-        <Button
-          variant="outline"
-          onClick={() => navigate('/menu')}
-          className="mb-6 text-lg"
-        >
-          <ArrowLeft className="h-5 w-5" />
-          Voltar
-        </Button>
-        
+      <StandardHeader title="Detalhes do Produto" />
+      
+      <div className="pt-20 p-6">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-4xl mx-auto">
           <div className="grid grid-cols-2 gap-8 p-8">
             <div>
@@ -70,16 +64,15 @@ const ProductDetail = () => {
             
             <div className="space-y-6">
               <div>
-                <h1 className="text-4xl font-bold text-restaurant-primary mb-4">
+                <h1 className="text-xl font-bold text-restaurant-primary mb-2">
                   {product.name}
                 </h1>
-                <p className="text-xl text-muted-foreground leading-relaxed">
+                <div className="text-xl font-bold text-restaurant-primary mb-4">
+                  R$ {product.price.toFixed(2).replace('.', ',')}
+                </div>
+                <p className="text-lg text-muted-foreground leading-relaxed">
                   {product.description}
                 </p>
-              </div>
-              
-              <div className="text-4xl font-bold text-restaurant-primary">
-                R$ {product.price.toFixed(2).replace('.', ',')}
               </div>
               
               {getItemQuantity(product.id) > 0 ? (
@@ -103,10 +96,10 @@ const ProductDetail = () => {
                 <Button
                   onClick={handleAddToCart}
                   variant="tablet"
-                  className="w-full mt-8"
+                  className="w-auto px-8 py-3 mt-8 rounded-lg"
                 >
-                  <Plus className="h-6 w-6 mr-3" />
-                  ADICIONAR À SACOLA
+                  <Plus className="h-5 w-5 mr-2" />
+                  Adicionar
                 </Button>
               )}
             </div>

@@ -1,50 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
 import { useApp } from '@/contexts/AppContext';
 import { toast } from '@/hooks/use-toast';
+import StandardHeader from '@/components/StandardHeader';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { items, removeItem, getTotalPrice } = useCart();
+  const { items, removeItem, getTotalPrice, clearCart } = useCart();
   const { setOrderSent } = useApp();
+  const [sentItems, setSentItems] = useState<string[]>([]);
 
   const handleSendToKitchen = () => {
-    if (items.length === 0) {
+    const pendingItems = items.filter(item => !sentItems.includes(item.product.id));
+    
+    if (pendingItems.length === 0) {
       toast({
-        title: "Sacola vazia",
-        description: "Adicione alguns itens antes de enviar",
+        title: "Nenhum item pendente",
+        description: "Todos os itens já foram enviados para a cozinha",
         variant: "destructive",
       });
       return;
     }
 
-    setOrderSent(true);
-    navigate('/checkout');
+    const newSentItems = [...sentItems, ...pendingItems.map(item => item.product.id)];
+    setSentItems(newSentItems);
+    
     toast({
-      title: "Pedido enviado!",
-      description: "Seus itens foram enviados para a cozinha",
+      title: "Itens enviados!",
+      description: "Os itens foram enviados para a cozinha",
     });
   };
 
+  const handleFinalizeSale = () => {
+    const pendingItems = items.filter(item => !sentItems.includes(item.product.id));
+    
+    if (pendingItems.length > 0) {
+      if (window.confirm("Você ainda possui itens pendentes para envio. Deseja continuar?\nSe sim, os itens pendentes serão descartados.\nCaso contrário, volte e envie os itens restantes para preparo.")) {
+        setOrderSent(true);
+        clearCart();
+        navigate('/checkout');
+      }
+    } else {
+      setOrderSent(true);
+      clearCart();
+      navigate('/checkout');
+    }
+  };
+
+  const allItemsSent = items.every(item => sentItems.includes(item.product.id));
+
   return (
     <div className="min-h-screen bg-restaurant-neutral">
-      <div className="p-6">
-        <Button
-          variant="outline"
-          onClick={() => navigate('/menu')}
-          className="mb-6 text-lg"
-        >
-          <ArrowLeft className="h-5 w-5" />
-          Voltar
-        </Button>
-        
+      <StandardHeader title="Meu Carrinho" />
+      
+      <div className="pt-20 p-6">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-restaurant-primary mb-8">
-            Minha Sacola
-          </h1>
           
           {items.length === 0 ? (
             <div className="text-center py-12">
@@ -60,43 +73,53 @@ const Cart = () => {
             </div>
           ) : (
             <>
-              <div className="space-y-4 mb-8">
-                {items.map((item) => (
-                  <div
-                    key={item.product.id}
-                    className="flex items-center justify-between p-4 bg-restaurant-neutral rounded-lg"
-                  >
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={item.product.image}
-                        alt={item.product.name}
-                        className="w-16 h-16 object-cover rounded-md"
-                      />
-                      <div>
-                        <h3 className="text-xl font-semibold text-restaurant-primary">
-                          {item.product.name}
-                        </h3>
-                        <p className="text-muted-foreground">
-                          Quantidade: {item.quantity}
-                        </p>
+                <div className="space-y-4 mb-8">
+                {items.map((item) => {
+                  const isItemSent = sentItems.includes(item.product.id);
+                  return (
+                    <div
+                      key={item.product.id}
+                      className={`flex items-center justify-between p-4 rounded-lg ${isItemSent ? 'bg-gray-100 opacity-60' : 'bg-restaurant-neutral'}`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={item.product.image}
+                          alt={item.product.name}
+                          className="w-16 h-16 object-cover rounded-md"
+                        />
+                        <div>
+                          <h3 className={`text-xl font-semibold ${isItemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                            {item.product.name}
+                          </h3>
+                          <p className="text-muted-foreground">
+                            Quantidade: {item.quantity}
+                          </p>
+                          {isItemSent && (
+                            <p className="text-sm text-gray-500 font-medium">
+                              Já enviado para preparo
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-4">
+                        <span className={`text-2xl font-bold ${isItemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                          R$ {(item.product.price * item.quantity).toFixed(2).replace('.', ',')}
+                        </span>
+                        {!isItemSent && (
+                          <Button
+                            variant="outline"
+                            size="lg"
+                            onClick={() => removeItem(item.product.id)}
+                            className="text-destructive border-destructive hover:bg-destructive hover:text-white"
+                          >
+                            <Trash2 className="h-5 w-5" />
+                          </Button>
+                        )}
                       </div>
                     </div>
-                    
-                    <div className="flex items-center gap-4">
-                      <span className="text-2xl font-bold text-restaurant-primary">
-                        R$ {(item.product.price * item.quantity).toFixed(2).replace('.', ',')}
-                      </span>
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        onClick={() => removeItem(item.product.id)}
-                        className="text-destructive border-destructive hover:bg-destructive hover:text-white"
-                      >
-                        <Trash2 className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               
               <div className="border-t pt-6">
@@ -109,19 +132,31 @@ const Cart = () => {
                   </span>
                 </div>
                 
-                <div className="bg-restaurant-secondary/20 p-6 rounded-lg mb-6">
-                  <p className="text-lg text-restaurant-primary font-semibold text-center">
-                    Finalize e aguarde! Seus itens serão enviados à cozinha para preparo.
-                  </p>
+                <div className="grid grid-cols-3 gap-4">
+                  <Button
+                    onClick={() => navigate('/menu')}
+                    variant="outline"
+                    className="w-full"
+                  >
+                    Continuar Comprando
+                  </Button>
+                  
+                  <Button
+                    onClick={handleSendToKitchen}
+                    className="w-full bg-[#FFC72C] text-black hover:bg-[#FFB800] font-semibold"
+                  >
+                    Enviar para a Cozinha
+                  </Button>
+                  
+                  <Button
+                    onClick={handleFinalizeSale}
+                    variant={allItemsSent ? "default" : "outline"}
+                    className={`w-full ${!allItemsSent ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={!allItemsSent && items.length > 0}
+                  >
+                    Finalizar Venda
+                  </Button>
                 </div>
-                
-                <Button
-                  onClick={handleSendToKitchen}
-                  variant="tablet-secondary"
-                  className="w-full"
-                >
-                  ENVIAR PARA COZINHA
-                </Button>
               </div>
             </>
           )}
