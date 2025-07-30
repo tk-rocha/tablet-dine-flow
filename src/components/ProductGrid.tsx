@@ -75,7 +75,7 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-restaurant-primary mb-2">
+                <h3 className="text-lg font-semibold text-restaurant-primary mb-2 truncate">
                   {product.name}
                 </h3>
                 <div className="flex items-center justify-between mb-4">
@@ -85,18 +85,7 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
                 </div>
               </div>
             </div>
-            <div className="px-4 pb-4 space-y-2">
-              <Button
-                variant="outline"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleProductClick(product.id);
-                }}
-                className="w-full border-restaurant-primary text-restaurant-primary hover:bg-restaurant-primary hover:text-restaurant-white"
-              >
-                VER PRODUTO
-              </Button>
-              
+            <div className="px-4 pb-4">
               {getItemQuantity(product.id) > 0 ? (
                 <QuantityControl
                   quantity={getItemQuantity(product.id)}
