@@ -125,29 +125,29 @@ const Cart = () => {
       </div>
       
       {items.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-6">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex justify-between items-center mb-3">
               <span className="text-base font-bold text-restaurant-primary">
                 Total:
               </span>
-              <span className="text-lg font-bold text-restaurant-primary">
+              <span className="text-xl font-semibold text-restaurant-primary">
                 R$ {getTotalPrice().toFixed(2).replace('.', ',')}
               </span>
             </div>
             
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3">
               <Button
                 onClick={() => navigate('/menu')}
                 variant="outline"
-                className="w-full"
+                className="w-full py-3 text-sm font-medium"
               >
                 Continuar Comprando
               </Button>
               
               <Button
                 onClick={handleSendToKitchen}
-                className="w-full bg-[#FFC72C] text-black hover:bg-[#FFB800] font-semibold"
+                className="w-full py-3 text-sm font-semibold bg-[#FFC72C] text-black hover:bg-[#FFB800]"
               >
                 Enviar para a Cozinha
               </Button>
@@ -155,7 +155,7 @@ const Cart = () => {
               <Button
                 onClick={handleFinalizeSale}
                 variant={allItemsSent ? "default" : "outline"}
-                className={`w-full ${!allItemsSent ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full py-3 text-sm font-medium ${!allItemsSent ? 'opacity-50 cursor-not-allowed' : ''}`}
                 disabled={!allItemsSent && items.length > 0}
               >
                 Finalizar Venda
