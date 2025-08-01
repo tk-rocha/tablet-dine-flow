@@ -10,6 +10,8 @@ import Menu from "./pages/Menu";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Payment from "./pages/Payment";
+import SaleCompleted from "./pages/SaleCompleted";
 import Search from "./pages/Search";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +31,8 @@ const App = () => (
               <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/pagamento" element={<Payment />} />
+              <Route path="/venda-finalizada" element={<SaleCompleted />} />
               <Route path="/search" element={<Search />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
