@@ -36,11 +36,210 @@ export const products: Product[] = [
   { id: '17', name: 'Sorrentini', description: 'Sorrentini com molho especial', price: 45.00, image: '/placeholder.svg', category: '3' },
 
   // LANCHES
-  { id: '18', name: 'Combo X-Salada', description: 'X-Salada com fritas e refrigerante', price: 29.99, image: '/placeholder.svg', category: '4' },
-  { id: '19', name: 'Combo X-Bacon', description: 'X-Bacon com fritas e refrigerante', price: 31.00, image: '/placeholder.svg', category: '4' },
-  { id: '20', name: 'Combo X-Tudo', description: 'X-Tudo com fritas e refrigerante', price: 36.99, image: '/placeholder.svg', category: '4' },
-  { id: '21', name: 'Combo Pastel', description: 'Pastel com fritas e refrigerante', price: 19.99, image: '/placeholder.svg', category: '4' },
-  { id: '22', name: 'Misto Quente', description: 'Misto quente tradicional', price: 22.00, image: '/placeholder.svg', category: '4' },
+  { 
+    id: '18', 
+    name: 'Combo X-Salada', 
+    description: 'X-Salada com fritas e refrigerante', 
+    price: 29.99, 
+    image: '/placeholder.svg', 
+    category: '4',
+    configuration: {
+      phases: [
+        {
+          id: 'meat',
+          name: 'Ponto da Carne',
+          required: true,
+          options: [
+            { id: 'rare', name: 'Mal passada' },
+            { id: 'medium', name: 'Ao ponto' },
+            { id: 'well', name: 'Bem passada' }
+          ]
+        },
+        {
+          id: 'drink',
+          name: 'Refrigerante',
+          required: true,
+          options: [
+            { id: 'coke', name: 'Coca-Cola' },
+            { id: 'fanta', name: 'Fanta' },
+            { id: 'sprite', name: 'Sprite' },
+            { id: 'guarana', name: 'Guaraná' }
+          ]
+        },
+        {
+          id: 'extra',
+          name: 'Adicional',
+          required: false,
+          options: [
+            { id: 'bbq', name: 'Molho Barbecue', price: 2.00 },
+            { id: 'mayo', name: 'Maionese temperada', price: 1.50 },
+            { id: 'fries', name: 'Fritas extras', price: 5.00 }
+          ]
+        }
+      ]
+    }
+  },
+  { 
+    id: '19', 
+    name: 'Combo X-Bacon', 
+    description: 'X-Bacon com fritas e refrigerante', 
+    price: 31.00, 
+    image: '/placeholder.svg', 
+    category: '4',
+    configuration: {
+      phases: [
+        {
+          id: 'meat',
+          name: 'Ponto da Carne',
+          required: true,
+          options: [
+            { id: 'rare', name: 'Mal passada' },
+            { id: 'medium', name: 'Ao ponto' },
+            { id: 'well', name: 'Bem passada' }
+          ]
+        },
+        {
+          id: 'drink',
+          name: 'Refrigerante',
+          required: true,
+          options: [
+            { id: 'coke', name: 'Coca-Cola' },
+            { id: 'fanta', name: 'Fanta' },
+            { id: 'sprite', name: 'Sprite' },
+            { id: 'guarana', name: 'Guaraná' }
+          ]
+        },
+        {
+          id: 'extra',
+          name: 'Adicional',
+          required: false,
+          options: [
+            { id: 'bbq', name: 'Molho Barbecue', price: 2.00 },
+            { id: 'mayo', name: 'Maionese temperada', price: 1.50 },
+            { id: 'fries', name: 'Fritas extras', price: 5.00 }
+          ]
+        }
+      ]
+    }
+  },
+  { 
+    id: '20', 
+    name: 'Combo X-Tudo', 
+    description: 'X-Tudo com fritas e refrigerante', 
+    price: 36.99, 
+    image: '/placeholder.svg', 
+    category: '4',
+    configuration: {
+      phases: [
+        {
+          id: 'meat',
+          name: 'Ponto da Carne',
+          required: true,
+          options: [
+            { id: 'rare', name: 'Mal passada' },
+            { id: 'medium', name: 'Ao ponto' },
+            { id: 'well', name: 'Bem passada' }
+          ]
+        },
+        {
+          id: 'drink',
+          name: 'Refrigerante',
+          required: true,
+          options: [
+            { id: 'coke', name: 'Coca-Cola' },
+            { id: 'fanta', name: 'Fanta' },
+            { id: 'sprite', name: 'Sprite' },
+            { id: 'guarana', name: 'Guaraná' }
+          ]
+        },
+        {
+          id: 'extra',
+          name: 'Adicional',
+          required: false,
+          options: [
+            { id: 'bbq', name: 'Molho Barbecue', price: 2.00 },
+            { id: 'mayo', name: 'Maionese temperada', price: 1.50 },
+            { id: 'fries', name: 'Fritas extras', price: 5.00 }
+          ]
+        }
+      ]
+    }
+  },
+  { 
+    id: '21', 
+    name: 'Combo Pastel', 
+    description: 'Pastel com fritas e refrigerante', 
+    price: 19.99, 
+    image: '/placeholder.svg', 
+    category: '4',
+    configuration: {
+      phases: [
+        {
+          id: 'meat',
+          name: 'Ponto da Carne',
+          required: true,
+          options: [
+            { id: 'rare', name: 'Mal passada' },
+            { id: 'medium', name: 'Ao ponto' },
+            { id: 'well', name: 'Bem passada' }
+          ]
+        },
+        {
+          id: 'drink',
+          name: 'Refrigerante',
+          required: true,
+          options: [
+            { id: 'coke', name: 'Coca-Cola' },
+            { id: 'fanta', name: 'Fanta' },
+            { id: 'sprite', name: 'Sprite' },
+            { id: 'guarana', name: 'Guaraná' }
+          ]
+        },
+        {
+          id: 'extra',
+          name: 'Adicional',
+          required: false,
+          options: [
+            { id: 'bbq', name: 'Molho Barbecue', price: 2.00 },
+            { id: 'mayo', name: 'Maionese temperada', price: 1.50 },
+            { id: 'fries', name: 'Fritas extras', price: 5.00 }
+          ]
+        }
+      ]
+    }
+  },
+  { 
+    id: '22', 
+    name: 'Misto Quente', 
+    description: 'Misto quente tradicional', 
+    price: 22.00, 
+    image: '/placeholder.svg', 
+    category: '4',
+    configuration: {
+      phases: [
+        {
+          id: 'drink',
+          name: 'Bebida',
+          required: true,
+          options: [
+            { id: 'coffee', name: 'Café' },
+            { id: 'juice', name: 'Suco' },
+            { id: 'soda', name: 'Refrigerante' }
+          ]
+        },
+        {
+          id: 'extra',
+          name: 'Adicional',
+          required: false,
+          options: [
+            { id: 'sauce', name: 'Molho', price: 1.00 },
+            { id: 'chips', name: 'Batata palha', price: 2.00 },
+            { id: 'egg', name: 'Ovo extra', price: 3.00 }
+          ]
+        }
+      ]
+    }
+  },
 
   // BEBIDAS
   { id: '23', name: 'Suco de Laranja', description: 'Suco natural de laranja', price: 15.00, image: '/placeholder.svg', category: '5' },

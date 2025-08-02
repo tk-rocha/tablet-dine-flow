@@ -91,8 +91,18 @@ const Cart = () => {
                         <h3 className={`text-xl font-semibold ${isItemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
                           {item.product.name}
                         </h3>
+                        {item.selectedOptions && (
+                          <div className="text-sm text-gray-600 mb-1">
+                            {Object.values(item.selectedOptions).map((option, index) => (
+                              <span key={option.id}>
+                                {option.name}
+                                {index < Object.values(item.selectedOptions!).length - 1 && ', '}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                         <p className={`text-xl font-semibold ${isItemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
-                          R$ {(item.product.price * item.quantity).toFixed(2).replace('.', ',')}
+                          R$ {((item.totalPrice || item.product.price) * item.quantity).toFixed(2).replace('.', ',')}
                         </p>
                         {isItemSent && (
                           <p className="text-sm text-gray-500 font-medium">

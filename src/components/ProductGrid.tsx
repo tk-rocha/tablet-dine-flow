@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { products } from '@/data/mockData';
@@ -6,31 +6,38 @@ import { useCart } from '@/contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
 import QuantityControl from './QuantityControl';
+import ProductConfiguration from './ProductConfiguration';
+import { Product, ProductOption } from '@/lib/types';
 
 interface ProductGridProps {
   selectedCategory: string;
 }
 
 const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
-  const { addItem, updateQuantity, getItemQuantity } = useCart();
+  const { addItem, updateQuantity, getItemQuantity, addConfiguredItem } = useCart();
   const navigate = useNavigate();
+  const [configurationProduct, setConfigurationProduct] = useState<Product | null>(null);
   
   const filteredProducts = products.filter(
     product => product.category === selectedCategory
   );
 
-  const handleAddToCart = (product: any) => {
-    addItem(product);
-    toast({
-      title: "Item adicionado",
-      description: `${product.name} foi adicionado à sacola`,
-    });
+  const handleAddToCart = (product: Product) => {
+    if (product.configuration) {
+      setConfigurationProduct(product);
+    } else {
+      addItem(product);
+      toast({
+        title: "Item adicionado",
+        description: `${product.name} foi adicionado à sacola`,
+      });
+    }
   };
 
-  const handleIncreaseQuantity = (product: any) => {
+  const handleIncreaseQuantity = (product: Product) => {
     const currentQuantity = getItemQuantity(product.id);
     if (currentQuantity === 0) {
-      addItem(product);
+      handleAddToCart(product);
     } else {
       updateQuantity(product.id, currentQuantity + 1);
     }
@@ -45,6 +52,16 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
 
   const handleProductClick = (productId: string) => {
     navigate(`/product/${productId}`);
+  };
+
+  const handleConfigurationConfirm = (selectedOptions: { [phaseId: string]: ProductOption }, totalPrice: number) => {
+    if (configurationProduct) {
+      addConfiguredItem(configurationProduct, selectedOptions, totalPrice);
+      toast({
+        title: "Item adicionado",
+        description: `${configurationProduct.name} foi adicionado à sacola`,
+      });
+    }
   };
 
   if (filteredProducts.length === 0) {
@@ -109,6 +126,13 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
         ))}
         </div>
       </div>
+
+      <ProductConfiguration
+        product={configurationProduct!}
+        isOpen={!!configurationProduct}
+        onClose={() => setConfigurationProduct(null)}
+        onConfirm={handleConfigurationConfirm}
+      />
     </div>
   );
 };
