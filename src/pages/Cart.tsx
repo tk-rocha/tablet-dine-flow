@@ -6,10 +6,11 @@ import { useCart } from '@/contexts/CartContext';
 import { useApp } from '@/contexts/AppContext';
 import { toast } from '@/hooks/use-toast';
 import StandardHeader from '@/components/StandardHeader';
+import QuantityControl from '@/components/QuantityControl';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { items, removeItem, getTotalPrice, clearCart } = useCart();
+  const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCart();
   const { setOrderSent } = useApp();
   const [sentItems, setSentItems] = useState<string[]>([]);
 
@@ -80,18 +81,18 @@ const Cart = () => {
                     key={item.product.id}
                     className={`flex items-center justify-between p-4 rounded-lg ${isItemSent ? 'bg-gray-100 opacity-60' : 'bg-restaurant-neutral'}`}
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-1">
                       <img
                         src={item.product.image}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover rounded-md"
                       />
-                      <div>
+                      <div className="flex-1">
                         <h3 className={`text-xl font-semibold ${isItemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
                           {item.product.name}
                         </h3>
-                        <p className="text-muted-foreground">
-                          Quantidade: {item.quantity}
+                        <p className={`text-xl font-semibold ${isItemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                          R$ {(item.product.price * item.quantity).toFixed(2).replace('.', ',')}
                         </p>
                         {isItemSent && (
                           <p className="text-sm text-gray-500 font-medium">
@@ -101,18 +102,23 @@ const Cart = () => {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-4">
-                      <span className={`text-2xl font-bold ${isItemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
-                        R$ {(item.product.price * item.quantity).toFixed(2).replace('.', ',')}
-                      </span>
+                    <div className="flex items-center gap-3">
+                      {!isItemSent && (
+                        <QuantityControl
+                          quantity={item.quantity}
+                          onIncrease={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          onDecrease={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
+                          size="sm"
+                        />
+                      )}
                       {!isItemSent && (
                         <Button
                           variant="outline"
-                          size="lg"
+                          size="sm"
                           onClick={() => removeItem(item.product.id)}
-                          className="text-destructive border-destructive hover:bg-destructive hover:text-white"
+                          className="text-destructive border-destructive hover:bg-destructive hover:text-white p-2"
                         >
-                          <Trash2 className="h-5 w-5" />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       )}
                     </div>
