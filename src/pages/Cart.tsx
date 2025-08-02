@@ -127,13 +127,35 @@ const Cart = () => {
       {items.length > 0 && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-3">
-              <span className="text-base font-bold text-restaurant-primary">
-                Total:
-              </span>
-              <span className="text-xl font-semibold text-restaurant-primary">
-                R$ {getTotalPrice().toFixed(2).replace('.', ',')}
-              </span>
+            <div className="space-y-2 mb-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">
+                  Subtotal:
+                </span>
+                <span className="text-sm font-medium text-restaurant-primary">
+                  R$ {getTotalPrice().toFixed(2).replace('.', ',')}
+                </span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">
+                  Taxa de serviço (10%):
+                </span>
+                <span className="text-sm font-medium text-restaurant-primary">
+                  R$ {(getTotalPrice() * 0.1).toFixed(2).replace('.', ',')}
+                </span>
+              </div>
+              
+              <div className="border-t pt-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-base font-bold text-restaurant-primary">
+                    Total:
+                  </span>
+                  <span className="text-xl font-bold text-restaurant-primary">
+                    R$ {(getTotalPrice() * 1.1).toFixed(2).replace('.', ',')}
+                  </span>
+                </div>
+              </div>
             </div>
             
             <div className="grid grid-cols-3 gap-3">
