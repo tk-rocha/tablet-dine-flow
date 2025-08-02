@@ -25,9 +25,8 @@ const Checkout = () => {
   const { items, clearCart } = useCart();
   const { setOrderSent, setCurrentTable } = useApp();
 
-  // Calculate total from sent items only (in a real app, this would come from a sent items context)
-  const sentItems = items; // For now, assuming all items are sent
-  const subtotal = sentItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  // Calculate total from all cart items
+  const subtotal = items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
   const serviceCharge = subtotal * 0.1;
   const total = subtotal + serviceCharge;
   const pricePerPerson = total / people;
@@ -47,7 +46,7 @@ const Checkout = () => {
     navigate('/pagamento', { 
       state: { 
         orderData: {
-          items: sentItems,
+          items: items,
           subtotal,
           serviceCharge,
           total,
@@ -60,7 +59,7 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen bg-restaurant-neutral flex flex-col">
-      <StandardHeader title="Checkout" />
+      <StandardHeader title="Finalização" />
       
       <div className="flex-1 pt-20 p-6 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl w-full">
