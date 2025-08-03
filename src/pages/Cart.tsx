@@ -10,12 +10,11 @@ import QuantityControl from '@/components/QuantityControl';
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCart();
+  const { items, removeItem, updateQuantity, getTotalPrice, clearCart, sentItems, sendToKitchen, isItemSent } = useCart();
   const { setOrderSent } = useApp();
-  const [sentItems, setSentItems] = useState<string[]>([]);
 
   const handleSendToKitchen = () => {
-    const pendingItems = items.filter(item => !sentItems.includes(item.product.id));
+    const pendingItems = items.filter(item => !isItemSent(item.product.id));
     
     if (pendingItems.length === 0) {
       toast({
@@ -26,8 +25,8 @@ const Cart = () => {
       return;
     }
 
-    const newSentItems = [...sentItems, ...pendingItems.map(item => item.product.id)];
-    setSentItems(newSentItems);
+    const itemIds = pendingItems.map(item => item.product.id);
+    sendToKitchen(itemIds);
     
     toast({
       title: "Itens enviados!",
@@ -36,22 +35,23 @@ const Cart = () => {
   };
 
   const handleFinalizeSale = () => {
-    const pendingItems = items.filter(item => !sentItems.includes(item.product.id));
+    const pendingItems = items.filter(item => !isItemSent(item.product.id));
     
     if (pendingItems.length > 0) {
-      if (window.confirm("Você ainda possui itens pendentes para envio. Deseja continuar?\nSe sim, os itens pendentes serão descartados.\nCaso contrário, volte e envie os itens restantes para preparo.")) {
-        setOrderSent(true);
-        clearCart();
-        navigate('/checkout');
-      }
-    } else {
-      setOrderSent(true);
-      clearCart();
-      navigate('/checkout');
+      toast({
+        title: "Ainda há itens para serem enviados",
+        description: "Volte e envie ou exclua os itens pendentes antes de finalizar a venda",
+        variant: "destructive",
+      });
+      return;
     }
+    
+    setOrderSent(true);
+    clearCart();
+    navigate('/checkout');
   };
 
-  const allItemsSent = items.every(item => sentItems.includes(item.product.id));
+  const allItemsSent = items.every(item => isItemSent(item.product.id));
 
   return (
     <div className="min-h-screen bg-restaurant-neutral flex flex-col">
@@ -75,11 +75,11 @@ const Cart = () => {
           ) : (
             <div className="space-y-4">
               {items.map((item) => {
-                const isItemSent = sentItems.includes(item.product.id);
+                const itemSent = isItemSent(item.product.id);
                 return (
                   <div
                     key={item.product.id}
-                    className={`flex items-center justify-between p-4 rounded-lg ${isItemSent ? 'bg-gray-100 opacity-60' : 'bg-restaurant-neutral'}`}
+                    className={`flex items-center justify-between p-4 rounded-lg ${itemSent ? 'bg-gray-100 opacity-60' : 'bg-restaurant-neutral'}`}
                   >
                     <div className="flex items-center gap-4 flex-1">
                       <img
@@ -88,7 +88,7 @@ const Cart = () => {
                         className="w-16 h-16 object-cover rounded-md"
                       />
                       <div className="flex-1">
-                        <h3 className={`text-xl font-semibold ${isItemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                        <h3 className={`text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
                           {item.product.name}
                         </h3>
                         {item.selectedOptions && (
@@ -101,10 +101,10 @@ const Cart = () => {
                             ))}
                           </div>
                         )}
-                        <p className={`text-xl font-semibold ${isItemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                        <p className={`text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
                           R$ {((item.totalPrice || item.product.price) * item.quantity).toFixed(2).replace('.', ',')}
                         </p>
-                        {isItemSent && (
+                        {itemSent && (
                           <p className="text-sm text-gray-500 font-medium">
                             Já enviado para preparo
                           </p>
@@ -113,7 +113,7 @@ const Cart = () => {
                     </div>
                     
                     <div className="flex items-center gap-3">
-                      {!isItemSent && (
+                      {!itemSent && (
                         <QuantityControl
                           quantity={item.quantity}
                           onIncrease={() => updateQuantity(item.product.id, item.quantity + 1)}
@@ -121,7 +121,7 @@ const Cart = () => {
                           size="sm"
                         />
                       )}
-                      {!isItemSent && (
+                      {!itemSent && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -192,9 +192,8 @@ const Cart = () => {
               
               <Button
                 onClick={handleFinalizeSale}
-                variant={allItemsSent ? "default" : "outline"}
-                className={`w-full py-3 text-sm font-medium ${!allItemsSent ? 'opacity-50 cursor-not-allowed' : ''}`}
-                disabled={!allItemsSent && items.length > 0}
+                variant="default"
+                className="w-full py-3 text-sm font-medium"
               >
                 Finalizar Venda
               </Button>

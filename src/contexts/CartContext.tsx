@@ -3,11 +3,14 @@ import { CartItem, Product, ProductOption } from '@/lib/types';
 
 interface CartContextType {
   items: CartItem[];
+  sentItems: string[];
   addItem: (product: Product) => void;
   addConfiguredItem: (product: Product, selectedOptions: { [phaseId: string]: ProductOption }, totalPrice: number) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   getItemQuantity: (productId: string) => number;
+  sendToKitchen: (itemIds: string[]) => void;
+  isItemSent: (productId: string) => boolean;
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
@@ -25,6 +28,7 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [sentItems, setSentItems] = useState<string[]>([]);
 
   const addItem = (product: Product) => {
     setItems(prevItems => {
@@ -56,6 +60,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const removeItem = (productId: string) => {
     setItems(prevItems => prevItems.filter(item => item.product.id !== productId));
+    setSentItems(prevSentItems => prevSentItems.filter(id => id !== productId));
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -78,8 +83,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return item ? item.quantity : 0;
   };
 
+  const sendToKitchen = (itemIds: string[]) => {
+    setSentItems(prevSentItems => [...prevSentItems, ...itemIds]);
+  };
+
+  const isItemSent = (productId: string) => {
+    return sentItems.includes(productId);
+  };
+
   const clearCart = () => {
     setItems([]);
+    setSentItems([]);
   };
 
   const getTotalItems = () => {
@@ -95,12 +109,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CartContext.Provider value={{ 
-      items, 
+      items,
+      sentItems,
       addItem,
       addConfiguredItem, 
       removeItem, 
       updateQuantity,
       getItemQuantity,
+      sendToKitchen,
+      isItemSent,
       clearCart, 
       getTotalItems, 
       getTotalPrice 
