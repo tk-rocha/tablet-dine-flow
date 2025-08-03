@@ -127,12 +127,14 @@ const ProductGrid = ({ selectedCategory }: ProductGridProps) => {
         </div>
       </div>
 
-      <ProductConfiguration
-        product={configurationProduct!}
-        isOpen={!!configurationProduct}
-        onClose={() => setConfigurationProduct(null)}
-        onConfirm={handleConfigurationConfirm}
-      />
+      {configurationProduct && (
+        <ProductConfiguration
+          product={configurationProduct}
+          isOpen={!!configurationProduct}
+          onClose={() => setConfigurationProduct(null)}
+          onConfirm={handleConfigurationConfirm}
+        />
+      )}
     </div>
   );
 };

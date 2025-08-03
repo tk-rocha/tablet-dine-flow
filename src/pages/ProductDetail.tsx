@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -7,11 +7,14 @@ import { useCart } from '@/contexts/CartContext';
 import { toast } from '@/hooks/use-toast';
 import QuantityControl from '@/components/QuantityControl';
 import StandardHeader from '@/components/StandardHeader';
+import ProductConfiguration from '@/components/ProductConfiguration';
+import { Product, ProductOption } from '@/lib/types';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addItem, updateQuantity, getItemQuantity } = useCart();
+  const { addItem, updateQuantity, getItemQuantity, addConfiguredItem } = useCart();
+  const [configurationProduct, setConfigurationProduct] = useState<Product | null>(null);
   
   const product = products.find(p => p.id === id);
 
@@ -24,19 +27,33 @@ const ProductDetail = () => {
   }
 
   const handleAddToCart = () => {
-    addItem(product);
-    toast({
-      title: "Item adicionado",
-      description: `${product.name} foi adicionado à sacola`,
-    });
+    if (product.configuration) {
+      setConfigurationProduct(product);
+    } else {
+      addItem(product);
+      toast({
+        title: "Item adicionado",
+        description: `${product.name} foi adicionado à sacola`,
+      });
+    }
   };
 
   const handleIncreaseQuantity = () => {
     const currentQuantity = getItemQuantity(product.id);
     if (currentQuantity === 0) {
-      addItem(product);
+      handleAddToCart();
     } else {
       updateQuantity(product.id, currentQuantity + 1);
+    }
+  };
+
+  const handleConfigurationConfirm = (selectedOptions: { [phaseId: string]: ProductOption }, totalPrice: number) => {
+    if (configurationProduct) {
+      addConfiguredItem(configurationProduct, selectedOptions, totalPrice);
+      toast({
+        title: "Item adicionado",
+        description: `${configurationProduct.name} foi adicionado à sacola`,
+      });
     }
   };
 
@@ -106,6 +123,15 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+
+      {configurationProduct && (
+        <ProductConfiguration
+          product={configurationProduct}
+          isOpen={!!configurationProduct}
+          onClose={() => setConfigurationProduct(null)}
+          onConfirm={handleConfigurationConfirm}
+        />
+      )}
     </div>
   );
 };

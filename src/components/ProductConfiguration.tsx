@@ -15,6 +15,11 @@ const ProductConfiguration = ({ product, isOpen, onClose, onConfirm }: ProductCo
   const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState<{ [phaseId: string]: ProductOption }>({});
 
+  // Safety check for null/undefined product
+  if (!product || !product.configuration) {
+    return null;
+  }
+
   if (!product.configuration) return null;
 
   const phases = product.configuration.phases;
