@@ -47,7 +47,6 @@ const Cart = () => {
     }
     
     setOrderSent(true);
-    clearCart();
     navigate('/checkout');
   };
 

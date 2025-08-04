@@ -42,7 +42,8 @@ const Checkout = () => {
       return;
     }
 
-    // Navigate to payment page with the order data
+    // Clear cart and navigate to payment page
+    clearCart();
     navigate('/pagamento', { 
       state: { 
         orderData: {

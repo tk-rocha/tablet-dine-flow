@@ -27,40 +27,61 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [sentItems, setSentItems] = useState<string[]>([]);
+  // Persist cart data in localStorage
+  const [items, setItems] = useState<CartItem[]>(() => {
+    const saved = localStorage.getItem('cart-items');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [sentItems, setSentItems] = useState<string[]>(() => {
+    const saved = localStorage.getItem('sent-items');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const addItem = (product: Product) => {
     setItems(prevItems => {
       const existingItem = prevItems.find(item => 
         item.product.id === product.id && !item.selectedOptions
       );
-      if (existingItem) {
-        return prevItems.map(item =>
-          item.product.id === product.id && !item.selectedOptions
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [{ product, quantity: 1 }, ...prevItems];
+      const newItems = existingItem
+        ? prevItems.map(item =>
+            item.product.id === product.id && !item.selectedOptions
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        : [{ product, quantity: 1 }, ...prevItems];
+      
+      localStorage.setItem('cart-items', JSON.stringify(newItems));
+      return newItems;
     });
   };
 
   const addConfiguredItem = (product: Product, selectedOptions: { [phaseId: string]: ProductOption }, totalPrice: number) => {
-    setItems(prevItems => [
-      { 
-        product, 
-        quantity: 1, 
-        selectedOptions, 
-        totalPrice 
-      }, 
-      ...prevItems
-    ]);
+    setItems(prevItems => {
+      const newItems = [
+        { 
+          product, 
+          quantity: 1, 
+          selectedOptions, 
+          totalPrice 
+        }, 
+        ...prevItems
+      ];
+      localStorage.setItem('cart-items', JSON.stringify(newItems));
+      return newItems;
+    });
   };
 
   const removeItem = (productId: string) => {
-    setItems(prevItems => prevItems.filter(item => item.product.id !== productId));
-    setSentItems(prevSentItems => prevSentItems.filter(id => id !== productId));
+    setItems(prevItems => {
+      const newItems = prevItems.filter(item => item.product.id !== productId);
+      localStorage.setItem('cart-items', JSON.stringify(newItems));
+      return newItems;
+    });
+    setSentItems(prevSentItems => {
+      const newSentItems = prevSentItems.filter(id => id !== productId);
+      localStorage.setItem('sent-items', JSON.stringify(newSentItems));
+      return newSentItems;
+    });
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -69,13 +90,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     
-    setItems(prevItems => 
-      prevItems.map(item =>
+    setItems(prevItems => {
+      const newItems = prevItems.map(item =>
         item.product.id === productId 
           ? { ...item, quantity }
           : item
-      )
-    );
+      );
+      localStorage.setItem('cart-items', JSON.stringify(newItems));
+      return newItems;
+    });
   };
 
   const getItemQuantity = (productId: string) => {
@@ -84,7 +107,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const sendToKitchen = (itemIds: string[]) => {
-    setSentItems(prevSentItems => [...prevSentItems, ...itemIds]);
+    setSentItems(prevSentItems => {
+      const newSentItems = [...prevSentItems, ...itemIds];
+      localStorage.setItem('sent-items', JSON.stringify(newSentItems));
+      return newSentItems;
+    });
   };
 
   const isItemSent = (productId: string) => {
@@ -94,6 +121,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const clearCart = () => {
     setItems([]);
     setSentItems([]);
+    localStorage.removeItem('cart-items');
+    localStorage.removeItem('sent-items');
   };
 
   const getTotalItems = () => {
