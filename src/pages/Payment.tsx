@@ -339,10 +339,12 @@ const Payment = () => {
                       <span className="font-medium min-w-20">{method.type}:</span>
                       <div className="flex-1">
                         <Input
-                          type="number"
-                          step="0.01"
-                          value={method.amount}
-                          onChange={(e) => updatePaymentAmount(method.id, parseFloat(e.target.value) || 0)}
+                          type="text"
+                          value={method.amount.toFixed(2).replace('.', ',')}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(',', '.');
+                            updatePaymentAmount(method.id, parseFloat(value) || 0);
+                          }}
                           placeholder="0,00"
                         />
                       </div>
