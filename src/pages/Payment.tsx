@@ -65,15 +65,10 @@ const Payment = () => {
   const canFinalize = Math.abs(remainingAmount) < 0.01; // Allow for floating point precision
 
   const addPaymentMethod = (type: string) => {
-    // For cash payments, round up to the nearest real to avoid fractional values
-    const suggestedAmount = type === 'Dinheiro' 
-      ? Math.ceil(Math.max(0, remainingAmount))
-      : Math.max(0, remainingAmount);
-    
     const newMethod: PaymentMethod = {
       id: Date.now().toString(),
       type,
-      amount: suggestedAmount
+      amount: Math.max(0, remainingAmount)
     };
     setPaymentMethods([...paymentMethods, newMethod]);
   };
