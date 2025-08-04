@@ -17,10 +17,17 @@ const Search = () => {
   const { addItem, updateQuantity, getItemQuantity, addConfiguredItem } = useCart();
   const [configurationProduct, setConfigurationProduct] = useState<Product | null>(null);
   
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products.filter(product => {
+    const searchLower = searchTerm.toLowerCase();
+    const nameMatch = product.name.toLowerCase().includes(searchLower);
+    const descMatch = product.description.toLowerCase().includes(searchLower);
+    const isMatch = nameMatch || descMatch;
+    
+    // Debug log
+    console.log(`Searching for "${searchTerm}": Product "${product.name}" - Name match: ${nameMatch}, Desc match: ${descMatch}, Final: ${isMatch}`);
+    
+    return isMatch;
+  });
 
   const handleAddToCart = (product: Product) => {
     if (product.configuration) {
