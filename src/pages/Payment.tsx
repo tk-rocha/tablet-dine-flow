@@ -68,7 +68,7 @@ const Payment = () => {
     const newMethod: PaymentMethod = {
       id: Date.now().toString(),
       type,
-      amount: Math.max(0, remainingAmount)
+      amount: totalWithDiscount // Sempre sugerir o valor total com desconto
     };
     setPaymentMethods([...paymentMethods, newMethod]);
   };
