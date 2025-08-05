@@ -65,10 +65,13 @@ const Payment = () => {
   const canFinalize = Math.abs(remainingAmount) < 0.01; // Allow for floating point precision
 
   const addPaymentMethod = (type: string) => {
+    // Sugerir o valor restante a ser pago, ou valor total se for primeira forma de pagamento
+    const suggestedAmount = paymentMethods.length === 0 ? totalWithDiscount : Math.max(0, remainingAmount);
+    
     const newMethod: PaymentMethod = {
       id: Date.now().toString(),
       type,
-      amount: totalWithDiscount // Sempre sugerir o valor total com desconto
+      amount: suggestedAmount
     };
     setPaymentMethods([...paymentMethods, newMethod]);
   };
