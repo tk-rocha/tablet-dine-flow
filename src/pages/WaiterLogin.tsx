@@ -43,13 +43,13 @@ const WaiterLogin = () => {
 
   return (
     <div 
-      className="min-h-screen flex items-center justify-center p-8 bg-cover bg-center relative"
+      className="min-h-screen flex items-center justify-center p-4 md:p-8 bg-cover bg-center relative"
       style={{
         backgroundImage: `url('/lovable-uploads/52e34c82-6180-4e8f-8b47-019c6822d850.png')`
       }}
     >
       <div className="absolute inset-0 bg-black/50"></div>
-      <div className="bg-card rounded-2xl shadow-2xl p-8 w-full max-w-sm space-y-6 relative z-10">
+      <div className="bg-card rounded-2xl shadow-2xl p-6 md:p-8 w-full max-w-sm space-y-6 relative z-10">
         <div className="text-center space-y-3">
           <h1 className="text-2xl font-bold text-restaurant-primary">
             Sistema de Autoatendimento

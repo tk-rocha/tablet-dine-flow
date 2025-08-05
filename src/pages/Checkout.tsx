@@ -62,9 +62,9 @@ const Checkout = () => {
     <div className="min-h-screen bg-restaurant-neutral flex flex-col">
       <StandardHeader title="Finalização" />
       
-      <div className="flex-1 pt-20 p-6 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl w-full">
-          <h1 className="text-4xl font-bold text-restaurant-primary mb-8 text-center">
+      <div className="flex-1 pt-20 p-4 md:p-6 flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 max-w-2xl w-full">
+          <h1 className="text-2xl md:text-4xl font-bold text-restaurant-primary mb-8 text-center">
             Fechamento do Pedido
           </h1>
           

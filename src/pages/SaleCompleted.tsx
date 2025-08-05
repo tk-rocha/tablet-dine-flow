@@ -29,13 +29,13 @@ const SaleCompleted = () => {
   }
 
   return (
-    <div className="min-h-screen bg-restaurant-neutral flex items-center justify-center p-6">
+    <div className="min-h-screen bg-restaurant-neutral flex items-center justify-center p-4 md:p-6">
       <Card className="max-w-2xl w-full">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
             <CheckCircle className="h-16 w-16 text-green-500" />
           </div>
-          <CardTitle className="text-3xl text-restaurant-primary">
+          <CardTitle className="text-2xl md:text-3xl text-restaurant-primary">
             Venda Finalizada com Sucesso!
           </CardTitle>
         </CardHeader>
@@ -80,7 +80,7 @@ const SaleCompleted = () => {
           </div>
 
           <div className="bg-restaurant-neutral p-4 rounded-lg">
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
                 <span className="font-medium">Pessoas na mesa:</span> {saleData.people}
               </div>

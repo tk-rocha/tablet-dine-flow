@@ -56,8 +56,8 @@ const Cart = () => {
     <div className="min-h-screen bg-restaurant-neutral flex flex-col">
       <StandardHeader title="Meu Carrinho" />
       
-      <div className="flex-1 pt-20 p-6 pb-44 overflow-y-auto">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
+      <div className="flex-1 pt-20 p-4 md:p-6 pb-44 overflow-y-auto">
+        <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 max-w-4xl mx-auto">
           
           {items.length === 0 ? (
             <div className="text-center py-12">
@@ -78,16 +78,16 @@ const Cart = () => {
                 return (
                   <div
                     key={item.product.id}
-                    className={`flex items-center justify-between p-4 rounded-lg ${itemSent ? 'bg-gray-100 opacity-60' : 'bg-restaurant-neutral'}`}
+                    className={`flex flex-col md:flex-row items-start md:items-center gap-4 p-4 rounded-lg ${itemSent ? 'bg-gray-100 opacity-60' : 'bg-restaurant-neutral'}`}
                   >
-                    <div className="flex items-center gap-4 flex-1">
+                    <div className="flex items-center gap-4 flex-1 w-full md:w-auto">
                       <img
                         src={item.product.image}
                         alt={item.product.name}
-                        className="w-16 h-16 object-cover rounded-md"
+                        className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-md flex-shrink-0"
                       />
-                      <div className="flex-1">
-                        <h3 className={`text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                      <div className="flex-1 min-w-0">
+                        <h3 className={`text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
                           {item.product.name}
                         </h3>
                         {item.selectedOptions && (
@@ -100,7 +100,7 @@ const Cart = () => {
                             ))}
                           </div>
                         )}
-                        <p className={`text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                        <p className={`text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
                           R$ {((item.totalPrice || item.product.price) * item.quantity).toFixed(2).replace('.', ',')}
                         </p>
                         {itemSent && (
@@ -111,7 +111,7 @@ const Cart = () => {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start mt-2 md:mt-0">
                       {!itemSent && (
                         <QuantityControl
                           quantity={item.quantity}
@@ -173,7 +173,7 @@ const Cart = () => {
               </div>
             </div>
             
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <Button
                 onClick={() => navigate('/menu')}
                 variant="outline"

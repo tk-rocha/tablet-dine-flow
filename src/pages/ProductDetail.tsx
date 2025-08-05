@@ -68,26 +68,26 @@ const ProductDetail = () => {
     <div className="min-h-screen bg-restaurant-neutral">
       <StandardHeader title="Detalhes do Produto" />
       
-      <div className="pt-20 p-6">
+      <div className="pt-20 p-4 md:p-6">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 gap-8 p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 p-4 md:p-8">
             <div>
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-96 object-cover rounded-lg"
+                className="w-full h-48 md:h-96 object-cover rounded-lg"
               />
             </div>
             
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               <div>
-                <h1 className="text-xl font-bold text-restaurant-primary mb-2">
+                <h1 className="text-lg md:text-xl font-bold text-restaurant-primary mb-2">
                   {product.name}
                 </h1>
-                <div className="text-xl font-bold text-restaurant-primary mb-4">
+                <div className="text-lg md:text-xl font-bold text-restaurant-primary mb-4">
                   R$ {product.price.toFixed(2).replace('.', ',')}
                 </div>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
                   {product.description}
                 </p>
               </div>

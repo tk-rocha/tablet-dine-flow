@@ -71,19 +71,19 @@ const Search = () => {
     <div className="min-h-screen bg-restaurant-neutral">
       <StandardHeader title="Pesquisar Produtos" />
       
-      <div className="pt-20 p-6">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-xl font-bold text-restaurant-primary mb-8">
+      <div className="pt-20 p-4 md:p-6">
+        <div className="bg-white rounded-lg shadow-lg p-4 md:p-8">
+          <h1 className="text-lg md:text-xl font-bold text-restaurant-primary mb-6 md:mb-8">
             Pesquisar Produtos
           </h1>
           
-          <div className="mb-8">
+          <div className="mb-6 md:mb-8">
             <Input
               type="text"
               placeholder="Digite o nome do produto ou descrição..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-16 text-xl"
+              className="h-12 md:h-16 text-lg md:text-xl"
             />
           </div>
           
@@ -98,7 +98,7 @@ const Search = () => {
                   Nenhum produto encontrado para "{searchTerm}"
                 </p>
               ) : (
-                <div className="grid grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                   {filteredProducts.map((product) => (
                     <div
                       key={product.id}
