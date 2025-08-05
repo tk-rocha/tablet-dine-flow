@@ -24,6 +24,7 @@ const Cart = () => {
         title: "Nenhum item pendente",
         description: "Todos os itens já foram enviados para a cozinha",
         variant: "destructive",
+        duration: 3000,
       });
       return;
     }
@@ -34,6 +35,7 @@ const Cart = () => {
     toast({
       title: "Itens enviados!",
       description: "Os itens foram enviados para a cozinha",
+      duration: 3000,
     });
   };
 
@@ -45,6 +47,7 @@ const Cart = () => {
         title: "Ainda há itens para serem enviados",
         description: "Volte e envie ou exclua os itens pendentes antes de finalizar a venda",
         variant: "destructive",
+        duration: 4000,
       });
       return;
     }
@@ -56,6 +59,7 @@ const Cart = () => {
   };
 
   const allItemsSent = items.every(item => isItemSent(item.product.id));
+  const hasPendingItems = items.some(item => !isItemSent(item.product.id));
 
   return (
     <div className="min-h-screen bg-restaurant-neutral flex flex-col">
@@ -215,8 +219,13 @@ const Cart = () => {
               
               <Button
                 onClick={handleFinalizeSale}
+                disabled={hasPendingItems}
                 variant="default"
-                className="w-full py-3 text-sm font-medium"
+                className={`w-full py-3 text-sm font-medium ${
+                  hasPendingItems 
+                    ? 'opacity-50 cursor-not-allowed' 
+                    : ''
+                }`}
               >
                 Finalizar Venda
               </Button>
