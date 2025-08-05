@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
@@ -12,6 +14,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart, sentItems, sendToKitchen, isItemSent } = useCart();
   const { setOrderSent } = useApp();
+  const [orderNotes, setOrderNotes] = useState('');
 
   const handleSendToKitchen = () => {
     const pendingItems = items.filter(item => !isItemSent(item.product.id));
@@ -47,7 +50,9 @@ const Cart = () => {
     }
     
     setOrderSent(true);
-    navigate('/checkout');
+    navigate('/checkout', { 
+      state: { orderNotes } 
+    });
   };
 
   const allItemsSent = items.every(item => isItemSent(item.product.id));
@@ -134,6 +139,25 @@ const Cart = () => {
                   </div>
                 );
               })}
+            </div>
+          )}
+          
+          {items.length > 0 && (
+            <div className="mt-6 space-y-3">
+              <Label htmlFor="order-notes" className="text-base font-medium text-restaurant-primary">
+                Observações do Pedido
+              </Label>
+              <Textarea
+                id="order-notes"
+                placeholder="Digite observações sobre o pedido (ex: sem cebola, ponto da carne, etc.)"
+                value={orderNotes}
+                onChange={(e) => setOrderNotes(e.target.value)}
+                className="min-h-20 resize-none"
+                maxLength={300}
+              />
+              <p className="text-xs text-gray-500">
+                {orderNotes.length}/300 caracteres
+              </p>
             </div>
           )}
         </div>
