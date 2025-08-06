@@ -175,13 +175,14 @@ export const products: Product[] = [
     configuration: {
       phases: [
         {
-          id: 'meat',
-          name: 'Ponto da Carne',
+          id: 'flavor',
+          name: 'Escolha o sabor do pastel',
           required: true,
           options: [
-            { id: 'rare', name: 'Mal passada' },
-            { id: 'medium', name: 'Ao ponto' },
-            { id: 'well', name: 'Bem passada' }
+            { id: 'meat', name: 'Carne' },
+            { id: 'cheese', name: 'Queijo' },
+            { id: 'pizza', name: 'Pizza' },
+            { id: 'palmito', name: 'Palmito' }
           ]
         },
         {
