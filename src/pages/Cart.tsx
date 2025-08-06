@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Trash2 } from 'lucide-react';
+import { Trash2, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
 import { useApp } from '@/contexts/AppContext';
@@ -15,6 +15,23 @@ const Cart = () => {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart, sentItems, sendToKitchen, isItemSent } = useCart();
   const { setOrderSent } = useApp();
   const [orderNotes, setOrderNotes] = useState('');
+  const [itemNotes, setItemNotes] = useState<{[key: string]: string}>({});
+  const [showNotesFor, setShowNotesFor] = useState<string | null>(null);
+
+  const handleToggleNotes = (itemId: string) => {
+    if (showNotesFor === itemId) {
+      setShowNotesFor(null);
+    } else {
+      setShowNotesFor(itemId);
+    }
+  };
+
+  const handleNoteChange = (itemId: string, note: string) => {
+    setItemNotes(prev => ({
+      ...prev,
+      [itemId]: note
+    }));
+  };
 
   const handleSendToKitchen = () => {
     const pendingItems = items.filter(item => !isItemSent(item.product.id));
@@ -133,6 +150,17 @@ const Cart = () => {
                         <Button
                           variant="outline"
                           size="sm"
+                          onClick={() => handleToggleNotes(item.product.id)}
+                          className={`p-2 ${itemNotes[item.product.id] ? 'bg-blue-50 border-blue-300' : ''}`}
+                          title="Adicionar observação"
+                        >
+                          <MessageSquare className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {!itemSent && (
+                        <Button
+                          variant="outline"
+                          size="sm"
                           onClick={() => removeItem(item.product.id)}
                           className="text-destructive border-destructive hover:bg-destructive hover:text-white p-2"
                         >
@@ -140,6 +168,24 @@ const Cart = () => {
                         </Button>
                       )}
                     </div>
+                    
+                    {!itemSent && showNotesFor === item.product.id && (
+                      <div className="w-full mt-3 space-y-2">
+                        <Label className="text-sm font-medium text-restaurant-primary">
+                          Observação do item
+                        </Label>
+                        <Textarea
+                          placeholder="Digite observações para este item (ex: sem cebola, ao ponto, etc.)"
+                          value={itemNotes[item.product.id] || ''}
+                          onChange={(e) => handleNoteChange(item.product.id, e.target.value)}
+                          className="min-h-16 resize-none text-sm"
+                          maxLength={150}
+                        />
+                        <p className="text-xs text-gray-500">
+                          {(itemNotes[item.product.id] || '').length}/150 caracteres
+                        </p>
+                      </div>
+                    )}
                   </div>
                 );
               })}
