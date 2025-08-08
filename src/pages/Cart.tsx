@@ -127,6 +127,11 @@ const Cart = () => {
                               ))}
                             </div>
                           )}
+                          {itemNotes[item.product.id] && (
+                            <div className="text-sm text-blue-600 mb-1 font-medium">
+                              Obs: {itemNotes[item.product.id]}
+                            </div>
+                          )}
                           <p className={`text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
                             R$ {((item.totalPrice || item.product.price) * item.quantity).toFixed(2).replace('.', ',')}
                           </p>
