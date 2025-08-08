@@ -127,7 +127,7 @@ const Cart = () => {
                               ))}
                             </div>
                           )}
-                          {itemNotes[item.product.id] && (
+                          {itemNotes[item.product.id] && itemNotes[item.product.id].trim() && (
                             <div className="text-sm text-blue-600 mb-1 font-medium">
                               Obs: {itemNotes[item.product.id]}
                             </div>
