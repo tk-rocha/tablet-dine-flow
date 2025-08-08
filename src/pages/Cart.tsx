@@ -104,73 +104,75 @@ const Cart = () => {
                 return (
                   <div
                     key={item.product.id}
-                    className={`flex flex-col md:flex-row items-start md:items-center gap-4 p-4 rounded-lg ${itemSent ? 'bg-gray-100 opacity-60' : 'bg-restaurant-neutral'}`}
+                    className={`p-4 rounded-lg ${itemSent ? 'bg-gray-100 opacity-60' : 'bg-restaurant-neutral'}`}
                   >
-                    <div className="flex items-center gap-4 flex-1 w-full md:w-auto">
-                      <img
-                        src={item.product.image}
-                        alt={item.product.name}
-                        className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-md flex-shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <h3 className={`text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
-                          {item.product.name}
-                        </h3>
-                        {item.selectedOptions && (
-                          <div className="text-sm text-gray-600 mb-1">
-                            {Object.values(item.selectedOptions).map((option, index) => (
-                              <span key={option.id}>
-                                {option.name}
-                                {index < Object.values(item.selectedOptions!).length - 1 && ', '}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        <p className={`text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
-                          R$ {((item.totalPrice || item.product.price) * item.quantity).toFixed(2).replace('.', ',')}
-                        </p>
-                        {itemSent && (
-                          <p className="text-sm text-gray-500 font-medium">
-                            Já enviado para preparo
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+                      <div className="flex items-center gap-4 flex-1 w-full md:w-auto">
+                        <img
+                          src={item.product.image}
+                          alt={item.product.name}
+                          className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-md flex-shrink-0"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <h3 className={`text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                            {item.product.name}
+                          </h3>
+                          {item.selectedOptions && (
+                            <div className="text-sm text-gray-600 mb-1">
+                              {Object.values(item.selectedOptions).map((option, index) => (
+                                <span key={option.id}>
+                                  {option.name}
+                                  {index < Object.values(item.selectedOptions!).length - 1 && ', '}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          <p className={`text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                            R$ {((item.totalPrice || item.product.price) * item.quantity).toFixed(2).replace('.', ',')}
                           </p>
+                          {itemSent && (
+                            <p className="text-sm text-gray-500 font-medium">
+                              Já enviado para preparo
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+                        {!itemSent && (
+                          <QuantityControl
+                            quantity={item.quantity}
+                            onIncrease={() => updateQuantity(item.product.id, item.quantity + 1)}
+                            onDecrease={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
+                            size="sm"
+                          />
+                        )}
+                        {!itemSent && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleToggleNotes(item.product.id)}
+                            className={`p-2 ${itemNotes[item.product.id] ? 'bg-blue-50 border-blue-300' : ''}`}
+                            title="Adicionar observação"
+                          >
+                            <MessageSquare className="h-4 w-4" />
+                          </Button>
+                        )}
+                        {!itemSent && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeItem(item.product.id)}
+                            className="text-destructive border-destructive hover:bg-destructive hover:text-white p-2"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         )}
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start mt-2 md:mt-0">
-                      {!itemSent && (
-                        <QuantityControl
-                          quantity={item.quantity}
-                          onIncrease={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          onDecrease={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
-                          size="sm"
-                        />
-                      )}
-                      {!itemSent && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleToggleNotes(item.product.id)}
-                          className={`p-2 ${itemNotes[item.product.id] ? 'bg-blue-50 border-blue-300' : ''}`}
-                          title="Adicionar observação"
-                        >
-                          <MessageSquare className="h-4 w-4" />
-                        </Button>
-                      )}
-                      {!itemSent && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => removeItem(item.product.id)}
-                          className="text-destructive border-destructive hover:bg-destructive hover:text-white p-2"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                    
                     {!itemSent && showNotesFor === item.product.id && (
-                      <div className="w-full mt-3 space-y-2">
+                      <div className="mt-4 space-y-2 border-t pt-3">
                         <Label className="text-sm font-medium text-restaurant-primary">
                           Observação do item
                         </Label>
