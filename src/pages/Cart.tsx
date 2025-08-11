@@ -82,8 +82,8 @@ const Cart = () => {
     <div className="min-h-screen bg-restaurant-neutral flex flex-col">
       <StandardHeader title="Meu Carrinho" />
       
-      <div className="flex-1 pt-20 p-4 md:p-6 pb-44 overflow-y-auto">
-        <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 max-w-4xl mx-auto">
+      <div className="flex-1 pt-16 sm:pt-20 p-3 sm:p-4 md:p-6 pb-44 overflow-y-auto">
+        <div className="bg-white rounded-lg shadow-lg p-3 sm:p-4 md:p-6 lg:p-8 max-w-6xl mx-auto">
           
           {items.length === 0 ? (
             <div className="text-center py-12">
@@ -106,15 +106,15 @@ const Cart = () => {
                     key={item.product.id}
                     className={`p-4 rounded-lg ${itemSent ? 'bg-gray-100 opacity-60' : 'bg-restaurant-neutral'}`}
                   >
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-                      <div className="flex items-center gap-4 flex-1 w-full md:w-auto">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                      <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full sm:w-auto">
                         <img
                           src={item.product.image}
                           alt={item.product.name}
-                          className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-md flex-shrink-0"
+                          className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 object-cover rounded-md flex-shrink-0"
                         />
                         <div className="flex-1 min-w-0">
-                          <h3 className={`text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                          <h3 className={`text-base sm:text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
                             {item.product.name}
                           </h3>
                           {item.selectedOptions && (
@@ -132,7 +132,7 @@ const Cart = () => {
                               Obs: {itemNotes[item.product.id]}
                             </div>
                           )}
-                          <p className={`text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
+                          <p className={`text-base sm:text-lg md:text-xl font-semibold ${itemSent ? 'text-gray-500' : 'text-restaurant-primary'}`}>
                             R$ {((item.totalPrice || item.product.price) * item.quantity).toFixed(2).replace('.', ',')}
                           </p>
                           {itemSent && (
@@ -143,7 +143,7 @@ const Cart = () => {
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+                      <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-start">
                         {!itemSent && (
                           <QuantityControl
                             quantity={item.quantity}
@@ -221,51 +221,51 @@ const Cart = () => {
       </div>
       
       {items.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="space-y-2 mb-4">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-3 sm:p-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="space-y-2 mb-3 sm:mb-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">
+                <span className="text-xs sm:text-sm text-gray-600">
                   Subtotal:
                 </span>
-                <span className="text-sm font-medium text-restaurant-primary">
+                <span className="text-xs sm:text-sm font-medium text-restaurant-primary">
                   R$ {getTotalPrice().toFixed(2).replace('.', ',')}
                 </span>
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">
+                <span className="text-xs sm:text-sm text-gray-600">
                   Taxa de serviço (10%):
                 </span>
-                <span className="text-sm font-medium text-restaurant-primary">
+                <span className="text-xs sm:text-sm font-medium text-restaurant-primary">
                   R$ {(getTotalPrice() * 0.1).toFixed(2).replace('.', ',')}
                 </span>
               </div>
               
               <div className="border-t pt-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-base font-bold text-restaurant-primary">
+                  <span className="text-sm sm:text-base font-bold text-restaurant-primary">
                     Total:
                   </span>
-                  <span className="text-xl font-bold text-restaurant-primary">
+                  <span className="text-lg sm:text-xl font-bold text-restaurant-primary">
                     R$ {(getTotalPrice() * 1.1).toFixed(2).replace('.', ',')}
                   </span>
                 </div>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
               <Button
                 onClick={() => navigate('/menu')}
                 variant="outline"
-                className="w-full py-3 text-sm font-medium"
+                className="w-full py-2 sm:py-3 text-xs sm:text-sm font-medium order-1"
               >
                 Continuar Comprando
               </Button>
               
               <Button
                 onClick={handleSendToKitchen}
-                className="w-full py-3 text-sm font-semibold bg-[#FFC72C] text-black hover:bg-[#FFB800]"
+                className="w-full py-2 sm:py-3 text-xs sm:text-sm font-semibold bg-[#FFC72C] text-black hover:bg-[#FFB800] order-2 sm:order-3 lg:order-2"
               >
                 Enviar para a Cozinha
               </Button>
@@ -274,7 +274,7 @@ const Cart = () => {
                 onClick={handleFinalizeSale}
                 disabled={hasPendingItems}
                 variant="default"
-                className={`w-full py-3 text-sm font-medium ${
+                className={`w-full py-2 sm:py-3 text-xs sm:text-sm font-medium order-3 sm:order-2 lg:order-3 ${
                   hasPendingItems 
                     ? 'opacity-50 cursor-not-allowed' 
                     : ''
